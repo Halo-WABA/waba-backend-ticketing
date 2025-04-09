@@ -72,15 +72,12 @@ public class JwtProvider {
 
     public boolean validateToken(String token) {
         try {
-            if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
-                return false;
-            }
-            token = token.split(" ")[1].trim();
-
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
 
             return claims.getBody().getExpiration().after(new Date());
-
         }
         catch (Exception e) {
             return false;
@@ -88,7 +85,11 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.toLowerCase().startsWith("bearer ")) {
+            return bearerToken.substring(7).trim();
+        }
+        return null;
     }
 
     public Authentication getAuthentication(String token) {
