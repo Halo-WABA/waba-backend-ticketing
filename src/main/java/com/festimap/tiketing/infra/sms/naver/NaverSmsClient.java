@@ -33,7 +33,7 @@ public class NaverSmsClient implements SmsClient {
     @Value("${naver-cloud-sms.serviceId}")
     private String serviceId;
 
-    public NaverSmsClient(ObjectMapper objectMapper, @Qualifier("simpleRestTemplate") RestTemplate restTemplate) {
+    public NaverSmsClient(ObjectMapper objectMapper, @Qualifier("pooledRestTemplate") RestTemplate restTemplate) {
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
     }
