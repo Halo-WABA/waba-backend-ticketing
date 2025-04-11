@@ -56,7 +56,7 @@ public class NaverSmsClient implements SmsClient {
             restTemplate.postForObject(url, httpEntity, NaverSmsResDto.class);
         }
         catch(Exception e) {
-            log.error("Failed to send SMS. request={}",  e.getMessage());
+            log.error("Failed to send SMS. request={}", smsSendRequest.getTo(), e);
         }
     }
 }
