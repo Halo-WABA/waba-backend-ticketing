@@ -14,14 +14,12 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class SmsConfig {
 
-    @Bean
-    @Qualifier("simpleRestTemplate")
+    @Bean(name = "simpleRestTemplate")
     public RestTemplate smsRestTemplate() {
         return new RestTemplate();
     }
 
-    @Bean
-    @Qualifier("pooledRestTemplate")
+    @Bean(name = "pooledRestTemplate")
     public RestTemplate pooledRestTemplate() {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
