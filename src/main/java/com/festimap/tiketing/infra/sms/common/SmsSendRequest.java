@@ -1,6 +1,6 @@
 package com.festimap.tiketing.infra.sms.common;
 
-import com.festimap.tiketing.domain.verify_code.Verification;
+import com.festimap.tiketing.domain.verification.Verification;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
