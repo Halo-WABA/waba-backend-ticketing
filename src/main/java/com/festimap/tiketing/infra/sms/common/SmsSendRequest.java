@@ -27,7 +27,7 @@ public class SmsSendRequest {
     public static SmsSendRequest from(Verification verification) {
         return SmsSendRequest.builder()
                 .to(verification.getPhoneNumber())
-                .message(verification.getCode())
+                .message(makeMessage(verification.getCode()))
                 .build();
     }
 
