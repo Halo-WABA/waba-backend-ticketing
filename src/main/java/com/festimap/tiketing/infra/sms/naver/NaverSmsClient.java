@@ -6,13 +6,16 @@ import com.festimap.tiketing.infra.sms.common.SmsSendRequest;
 import com.festimap.tiketing.infra.sms.naver.dto.NaverSmsResDto;
 import com.festimap.tiketing.infra.sms.naver.util.NaverRequestBuilder;
 import com.festimap.tiketing.infra.sms.naver.util.NaverUrlBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
+@Slf4j
 public class NaverSmsClient implements SmsClient {
 
     private final ObjectMapper objectMapper;
@@ -39,7 +42,9 @@ public class NaverSmsClient implements SmsClient {
     }
 
     @Override
+    @Async("asyncExecutor")
     public void send(SmsSendRequest smsSendRequest) {
+
         String endpoint = NaverUrlBuilder.buildMessageEndpoint(serviceId);
         String url = apiBaseUrl + endpoint;
 
