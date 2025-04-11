@@ -36,7 +36,7 @@ public class Verification {
     private String code;
 
     @Column(name = "is_verified", nullable = false)
-    private boolean isVerified = false;
+    private boolean isVerified;
 
     @Column(name = "code_expired_at", nullable = false)
     private LocalDateTime codeExpiredAt;
@@ -50,6 +50,7 @@ public class Verification {
         this.code = code;
         this.codeExpiredAt = codeExpiredAt;
         this.verifiedExpiredAt = verifiedExpiredAt;
+        this.isVerified = false;
     }
 
     public static Verification from(VerificationReqDto verificationReqDto){
@@ -63,6 +64,7 @@ public class Verification {
     public void updateVerificationCode(){
         this.code = generateCode();
         this.codeExpiredAt =LocalDateTime.now().plusMinutes(3);
+        this.isVerified = false;
     }
 
     public void verifyCode(String code){
