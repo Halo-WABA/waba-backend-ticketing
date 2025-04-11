@@ -64,7 +64,7 @@ public class NaverRequestBuilder {
 
     public HttpEntity<String> build() {
         NaverSmsReqDto naverSmsReqDto = NaverSmsReqDto.builder()
-                .type("LMS")
+                .type("SMS")
                 .contentType("COMM")
                 .countryCode("82")
                 .from(senderPhone)
