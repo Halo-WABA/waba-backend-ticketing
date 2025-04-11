@@ -26,7 +26,6 @@ public class NaverRequestBuilder {
     private final String secretKey;
     private final String senderPhone;
 
-    private String defaultSubject;
     private String defaultMessage;
     private HttpHeaders headers;
     private NaverMessageReqDto messageReqDto;
@@ -56,7 +55,6 @@ public class NaverRequestBuilder {
     }
 
     public NaverRequestBuilder body(SmsSendRequest smsSendRequest) {
-        this.defaultSubject = smsSendRequest.getSubject();
         this.defaultMessage = smsSendRequest.getMessage();
         this.messageReqDto = NaverMessageReqDto.builder()
                 .to(smsSendRequest.getTo())
@@ -70,7 +68,6 @@ public class NaverRequestBuilder {
                 .contentType("COMM")
                 .countryCode("82")
                 .from(senderPhone)
-                .subject(defaultSubject)
                 .content(defaultMessage)
                 .messages(List.of(messageReqDto))
                 .build();
