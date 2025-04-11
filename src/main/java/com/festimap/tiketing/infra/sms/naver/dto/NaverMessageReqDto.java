@@ -8,5 +8,5 @@ import lombok.*;
 @Builder
 @ToString
 public class NaverMessageReqDto {
-    String to;
+    private String to;
 }
