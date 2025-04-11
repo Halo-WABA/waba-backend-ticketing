@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ import java.util.stream.IntStream;
 public class Verification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "phone_number", nullable = false, length = 11)
@@ -58,12 +59,14 @@ public class Verification {
                 .phoneNumber(verificationReqDto.getPhoneNumber())
                 .code(generateCode())
                 .codeExpiredAt(LocalDateTime.now().plusMinutes(3))
+                .verifiedExpiredAt(LocalDateTime.now().minusMinutes(1))
                 .build();
     }
 
     public void updateVerificationCode(){
         this.code = generateCode();
         this.codeExpiredAt =LocalDateTime.now().plusMinutes(3);
+        this.verifiedExpiredAt = LocalDateTime.now().minusMinutes(1);
         this.isVerified = false;
     }
 
@@ -79,9 +82,9 @@ public class Verification {
     }
 
     private static String generateCode(){
-        Random random = new Random();
+        SecureRandom secureRandom = new SecureRandom();
         return IntStream.range(0,6)
-                .map(i->random.nextInt(10))
+                .map(i->secureRandom.nextInt(10))
                 .mapToObj(String::valueOf)
                 .collect(Collectors.joining());
     }
