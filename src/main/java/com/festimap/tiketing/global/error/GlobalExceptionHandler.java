@@ -10,6 +10,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Random;
+import java.util.concurrent.RejectedExecutionException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -63,5 +66,12 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus()).body(response);
+    }
+
+    // RejectedExecutionException 핸들링
+    @ExceptionHandler(RejectedExecutionException.class)
+    public ResponseEntity<ErrorResponse> handleAsyncThreadPoolTaskLimitException(RejectedExecutionException e) {
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.THREAD_POOL_REJECTED);
+        return ResponseEntity.status(ErrorCode.THREAD_POOL_REJECTED.getStatus()).body(response);
     }
 }
