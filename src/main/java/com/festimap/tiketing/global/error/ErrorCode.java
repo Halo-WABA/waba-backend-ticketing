@@ -26,6 +26,9 @@ public enum ErrorCode {
     // Infra
     SMS_SEND_FAILED("I001", "SMS Send Failed",500),
 
+    // Ticketing
+    TICKET_RESERVATION_CLOSED("T001", "Ticket Reservation Closed",429),
+    TICKET_EXIST_BY_PHONENUM("T002", "Ticket Exist By Phone Number",400),
     ;
 
     private final String code;
