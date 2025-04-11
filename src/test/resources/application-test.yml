@@ -16,6 +16,11 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+jwt:
+  token:
+    secret: 1234qw3r123456789098a1nwi23iasdnkzjxdjkwjeqwekjdzkjdhaskjdnxncnnmszdaseqweqweqeqwewqeqw
+
+
 logging:
   level:
     root: info
