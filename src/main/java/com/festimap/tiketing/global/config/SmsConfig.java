@@ -1,4 +1,4 @@
-package com.festimap.tiketing.infra.sms.naver.config;
+package com.festimap.tiketing.global.config;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -25,8 +25,8 @@ public class SmsConfig {
     public RestTemplate pooledRestTemplate() {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-        cm.setMaxTotal(50);
-        cm.setDefaultMaxPerRoute(50);
+        cm.setMaxTotal(30);
+        cm.setDefaultMaxPerRoute(30);
 
         HttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(cm)
