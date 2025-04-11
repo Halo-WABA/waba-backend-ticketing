@@ -69,6 +69,9 @@ public class Verification {
         if (!this.code.equals(code)) {
             throw new BaseException(ErrorCode.INVALID_VERIFICATION_CODE);
         }
+        if(this.codeExpiredAt.isBefore(LocalDateTime.now())){
+            throw new BaseException(ErrorCode.EXPIRED_VERIFICATION_CODE);
+        }
         this.isVerified = true;
         this.verifiedExpiredAt = LocalDateTime.now().plusHours(1);
     }
