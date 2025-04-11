@@ -52,7 +52,11 @@ public class NaverSmsClient implements SmsClient {
                 .header(endpoint)
                 .body(smsSendRequest)
                 .build();
-
-        restTemplate.postForObject(url, httpEntity, NaverSmsResDto.class);
+        try {
+            restTemplate.postForObject(url, httpEntity, NaverSmsResDto.class);
+        }
+        catch(Exception e) {
+            log.error("Failed to send SMS. request={}",  e.getMessage());
+        }
     }
 }
