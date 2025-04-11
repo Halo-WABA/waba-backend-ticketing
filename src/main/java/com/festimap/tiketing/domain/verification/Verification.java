@@ -1,7 +1,7 @@
 package com.festimap.tiketing.domain.verification;
 
-
 import com.festimap.tiketing.domain.verification.dto.VerificationReqDto;
+import com.festimap.tiketing.domain.verification.util.CodeGenerator;
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.AccessLevel;
@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -82,10 +80,6 @@ public class Verification {
     }
 
     private static String generateCode(){
-        SecureRandom secureRandom = new SecureRandom();
-        return IntStream.range(0,6)
-                .map(i->secureRandom.nextInt(10))
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining());
+        return CodeGenerator.generateCode();
     }
 }
