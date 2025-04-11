@@ -8,4 +8,9 @@ public class SecurityConstants {
             "/v3/**",
             "/swagger-ui.html",
     };
+
+    public static final String[] PUBLIC_POST_URLS = {
+            "/api/verification/send/code",
+            "/api/verification/check/code",
+    };
 }

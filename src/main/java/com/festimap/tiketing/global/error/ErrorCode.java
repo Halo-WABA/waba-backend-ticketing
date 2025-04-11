@@ -25,6 +25,11 @@ public enum ErrorCode {
 
     // Infra
     SMS_SEND_FAILED("I001", "SMS Send Failed",500),
+    THREAD_POOL_REJECTED("I003", "Async thread pool rejected execution", 503),
+
+    // Verification
+    INVALID_VERIFICATION_CODE("V001", "Invalid Verification Code",400)
+
 
     ;
 

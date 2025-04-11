@@ -10,6 +10,7 @@ public class AuthorizationConfig {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(SecurityConstants.SWAGGER_URLS).permitAll()
+                .antMatchers(SecurityConstants.PUBLIC_POST_URLS).permitAll()
                 .anyRequest().authenticated();
     }
 }
