@@ -74,6 +74,12 @@ dependencies {
 
 	//httpClient
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+	// AOP
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+	// guava
+	implementation("com.google.guava:guava:33.4.0-jre")
 }
 
 tasks.named('test') {
