@@ -1,7 +1,7 @@
 package com.festimap.tiketing.infra;
 
+import com.festimap.tiketing.infra.sms.SmsClient;
 import com.festimap.tiketing.infra.sms.common.SmsSendRequest;
-import com.festimap.tiketing.infra.sms.naver.NaverSmsClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.util.StopWatch;
 public class NaverSmsClientTest {
 
     @Autowired
-    private NaverSmsClient naverSmsClient;
+    private SmsClient smsClient;
 
     @Value("${naver-cloud-sms.to}")
     private String to;
@@ -24,17 +24,16 @@ public class NaverSmsClientTest {
     void 실제_네이버_sms_전송_테스트() {
 
         SmsSendRequest request = SmsSendRequest.of(
-                to,"제목",
-                "통합 테스트 메시지입니다."
+                to, "통합 테스트 메시지입니다."
         );
 
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("send_sms");
-        for(int i = 0;i<3;i++){
+        for(int i = 0;i<1;i++){
 
             long startTime = System.currentTimeMillis();
-            naverSmsClient.send(request);
+            smsClient.send(request);
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
 
