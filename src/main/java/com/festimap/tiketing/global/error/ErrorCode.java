@@ -32,6 +32,9 @@ public enum ErrorCode {
     EXPIRED_VERIFICATION_CODE("V002", "Verification code has expired", 400)
 
 
+    // Ticketing
+    TICKET_RESERVATION_CLOSED("T001", "Ticket Reservation Closed",429),
+    TICKET_EXIST_BY_PHONENUM("T002", "Ticket Exist By Phone Number",400),
     ;
 
     private final String code;
