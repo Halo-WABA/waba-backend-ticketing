@@ -51,7 +51,7 @@ public class Ticket {
     public static Ticket from(TicketRequest request){
         return Ticket.builder()
                 .count(request.getTicketCount())
-                .phoneNo(request.getPhoneNo())
+                .phoneNo(request.getPhoneNumber())
                 .build();
     }
 }
