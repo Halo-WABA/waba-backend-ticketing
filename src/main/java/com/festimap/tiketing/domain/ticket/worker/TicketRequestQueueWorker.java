@@ -18,6 +18,7 @@ public class TicketRequestQueueWorker {
     private final TicketService ticketService;
 
     @PostConstruct
+    //  @Scheduled(cron = "0 0 0 * * *")
     public void start() {
         Executors.newSingleThreadExecutor().submit(this::processQueue);
     }

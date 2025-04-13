@@ -8,6 +8,6 @@ import javax.validation.constraints.Pattern;
 public class TicketRequest {
 
     @Pattern(regexp = "^010\\d{8}$", message = "전화번호 형식이 올바르지 않습니다.")
-    private String phoneNo;
+    private String phoneNumber;
     private int ticketCount;
 }
