@@ -17,13 +17,13 @@ public class TicketService {
 
     @Transactional
     public void reserve(TicketRequest request) {
-        isExistTicketBy(request.getPhoneNumber());
+        isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         Ticket ticket = Ticket.from(request);
         ticketRepository.save(ticket);
     }
 
-    private void isExistTicketBy(String phoneNo) {
-        if(ticketRepository.existsByPhoneNumber(phoneNo)){
+    private void isExistTicketBy(Long eventId, String phoneNo) {
+        if(ticketRepository.existsByEventIdAndPhoneNumber(eventId, phoneNo)){
             throw new BaseException(ErrorCode.TICKET_EXIST_BY_PHONENUM);
         }
     }
