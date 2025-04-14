@@ -22,7 +22,8 @@ public class TicketService {
     @Transactional
     public void reserve(TicketRequest request) {
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
-        Ticket ticket = Ticket.from(request);
+        Event event = loadEventOrThrow(request.getEventId());
+        Ticket ticket = Ticket.of(request, event);
         ticketRepository.save(ticket);
     }
 
@@ -41,5 +42,10 @@ public class TicketService {
         if(ticketRepository.existsByEventIdAndPhoneNumber(eventId, phoneNo)){
             throw new BaseException(ErrorCode.TICKET_EXIST_BY_PHONENUM);
         }
+    }
+
+    private Event loadEventOrThrow(Long eventId) {
+        return eventRepository.findByIdWithLock(eventId)
+                .orElseThrow(() -> new EventNotFoundException(eventId));
     }
 }
