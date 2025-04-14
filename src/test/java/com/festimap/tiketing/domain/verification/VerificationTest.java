@@ -19,14 +19,18 @@ public class VerificationTest {
 
     @BeforeEach
     void setUp(){
-        VerificationReqDto verificationReqDto = new VerificationReqDto("01012345678");
+        VerificationReqDto verificationReqDto = new VerificationReqDto();
+        setField(verificationReqDto, "eventId", 1L);
+        setField(verificationReqDto, "phoneNumber", "01012345678");
         verification = Verification.from(verificationReqDto);
     }
 
     @Test
     void verification_생성_테스트(){
         //given
-        VerificationReqDto verificationReqDto = new VerificationReqDto("01012345678");
+        VerificationReqDto verificationReqDto = new VerificationReqDto();
+        setField(verificationReqDto, "eventId", 1L);
+        setField(verificationReqDto, "phoneNumber", "01012345678");
 
         //when
         Verification target = Verification.from(verificationReqDto);
