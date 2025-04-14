@@ -9,7 +9,6 @@ import com.festimap.tiketing.domain.verification.repository.VerificationReposito
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import com.festimap.tiketing.infra.sms.SmsClient;
-import com.google.common.util.concurrent.RateLimiter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @SuppressWarnings("NonAsciiCharacters")
-public class VerificationControllerTest {
+public class VerificationServiceTest {
 
     @Mock
     private VerificationRepository verificationRepository;
