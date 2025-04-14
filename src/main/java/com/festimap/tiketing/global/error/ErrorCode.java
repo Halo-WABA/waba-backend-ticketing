@@ -29,7 +29,7 @@ public enum ErrorCode {
 
     // Verification
     INVALID_VERIFICATION_CODE("V001", "Invalid Verification Code",400),
-    EXPIRED_VERIFICATION_CODE("V002", "Verification code has expired", 400)
+    EXPIRED_VERIFICATION_CODE("V002", "Verification code has expired", 400),
 
 
     // Ticketing
