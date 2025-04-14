@@ -1,6 +1,10 @@
 package com.festimap.tiketing.domain.verification.service;
 
 
+import com.festimap.tiketing.domain.event.Event;
+import com.festimap.tiketing.domain.event.dto.EventCreateReqDto;
+import com.festimap.tiketing.domain.event.exception.EventNotFoundException;
+import com.festimap.tiketing.domain.event.repository.EventRepository;
 import com.festimap.tiketing.domain.verification.Verification;
 import com.festimap.tiketing.domain.verification.dto.VerificationCheckReqDto;
 import com.festimap.tiketing.domain.verification.dto.VerificationReqDto;
@@ -38,23 +42,33 @@ public class VerificationServiceTest {
     @Mock
     private SmsClient smsClient;
 
+    @Mock
+    private EventRepository eventRepository;
+
     @InjectMocks
     private VerificationService verificationService;
 
     private Verification verification;
     private VerificationReqDto verificationReqDto;
+    private Event event;
 
     @BeforeEach
     void setUp(){
-        verificationReqDto = new VerificationReqDto("01012345678");
+        verificationReqDto = new VerificationReqDto();
+        setField(verificationReqDto, "eventId", 1L);
+        setField(verificationReqDto, "phoneNumber", "01012345678");
         verification = Verification.from(verificationReqDto);
         verification.updateVerificationCode();
+        EventCreateReqDto eventCreateReqDto =
+                new EventCreateReqDto(1L,"1차 예매", LocalDateTime.now(),10);
+        event = Event.from(eventCreateReqDto);
     }
 
     @Test
     void 기존번호가_존재할때_정상_동작_테스트() {
         // given
         given(verificationRepository.findByPhoneNumber("01012345678")).willReturn(Optional.of(verification));
+        given(eventRepository.findById(1L)).willReturn(Optional.of(event));
         doNothing().when(smsClient).send(any());
 
         // when
@@ -70,6 +84,7 @@ public class VerificationServiceTest {
         //given
         given(verificationRepository.findByPhoneNumber("01012345678")).willReturn(Optional.empty());
         given(verificationRepository.save(any())).willReturn(verification);
+        given(eventRepository.findById(1L)).willReturn(Optional.of(event));
         doNothing().when(smsClient).send(any());
 
         // when
@@ -81,7 +96,25 @@ public class VerificationServiceTest {
         verify(smsClient, times(1)).send(any());
     }
 
+    @Test
+    void SMS_전송_Event_존재하지_않을때_예외(){
+        //when & then
+        assertThatThrownBy(() -> verificationService.sendVerificationCode(verificationReqDto))
+                .isInstanceOf(EventNotFoundException.class);
+    }
 
+    @Test
+    void SMS_전송_Event_isFinished_가_true_일때_예외(){
+        //given
+        setField(event, "isFinished", true);
+        given(eventRepository.findById(1L)).willReturn(Optional.of(event));
+
+        //when & then
+        assertThatThrownBy(() -> verificationService.sendVerificationCode(verificationReqDto))
+                .isInstanceOf(BaseException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.TICKET_RESERVATION_CLOSED);
+    }
 
     @Test
     void 인증코드_검증_성공_테스트(){
@@ -122,7 +155,7 @@ public class VerificationServiceTest {
     }
 
     @Test
-    void 인증기간이_지난_인증코드일_경우_예외(){
+    void 인증코드_검증_인증기간이_지난_인증코드일_경우_예외(){
         //given
         VerificationCheckReqDto dto = new VerificationCheckReqDto(verification.getPhoneNumber(),verification.getCode());
         given(verificationRepository.findByPhoneNumber("01012345678")).willReturn(Optional.of(verification));
