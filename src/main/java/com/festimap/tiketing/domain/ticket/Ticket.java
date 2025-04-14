@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
                 columnNames = {"reservation_number", "phone_number"}
         )
 )
+@EntityListeners(AuditingEntityListener.class)
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +38,7 @@ public class Ticket {
     private String phoneNumber;
 
     @Column(name = "issued_at", nullable = false)
+    @CreatedDate
     private LocalDateTime issuedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,16 +46,25 @@ public class Ticket {
     private Event event;
 
     @Builder
-    private Ticket(int count, String phoneNo) {
+    private Ticket(int count, String phoneNo, Event event) {
         this.count = count;
         this.reservationNumber = ReservationNumGenerator.generate();
         this.phoneNumber = phoneNo;
+        this.event = event;
     }
 
     public static Ticket from(TicketRequest request){
         return Ticket.builder()
                 .count(request.getTicketCount())
                 .phoneNo(request.getPhoneNumber())
+                .build();
+    }
+
+    public static Ticket of(TicketRequest ticketRequest, Event event){
+        return Ticket.builder()
+                .count(ticketRequest.getTicketCount())
+                .phoneNo(ticketRequest.getPhoneNumber())
+                .event(event)
                 .build();
     }
 }

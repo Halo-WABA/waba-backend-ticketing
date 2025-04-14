@@ -1,5 +1,8 @@
 package com.festimap.tiketing.domain.ticket.service;
 
+import com.festimap.tiketing.domain.event.Event;
+import com.festimap.tiketing.domain.event.exception.EventNotFoundException;
+import com.festimap.tiketing.domain.event.repository.EventRepository;
 import com.festimap.tiketing.domain.ticket.Ticket;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.domain.ticket.repository.TicketRepository;
@@ -14,12 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final EventRepository eventRepository;
 
     @Transactional
     public void reserve(TicketRequest request) {
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         Ticket ticket = Ticket.from(request);
         ticketRepository.save(ticket);
+    }
+
+    @Transactional
+    public void reserveWithLock(TicketRequest request) {
+        isExistTicketBy(request.getEventId(), request.getPhoneNumber());
+
+        Event event = eventRepository.findByIdWithLock(request.getEventId())
+                .orElseThrow(()-> new EventNotFoundException(request.getEventId()));
+
+        event.decreaseRemainingTickets(request.getTicketCount());
+        ticketRepository.save(Ticket.of(request,event));
     }
 
     private void isExistTicketBy(Long eventId, String phoneNo) {
