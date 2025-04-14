@@ -35,6 +35,8 @@ public enum ErrorCode {
     // Ticketing
     TICKET_RESERVATION_CLOSED("T001", "Ticket Reservation Closed",429),
     TICKET_EXIST_BY_PHONENUM("T002", "Ticket Exist By Phone Number",400),
+    TICKET_SOLD_OUT("T003", "Not enough tickets remaining", 400),
+
     ;
 
     private final String code;
