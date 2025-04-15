@@ -1,6 +1,6 @@
 package com.festimap.tiketing.domain.event;
 
-import com.festimap.tiketing.domain.event.dto.EventCreateReqDto;
+import com.festimap.tiketing.domain.event.dto.*;
 import com.festimap.tiketing.domain.ticket.Ticket;
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
@@ -49,6 +49,9 @@ public class Event {
     @Column(name = "prefix", nullable = false)
     private String prefix;
 
+    @Column(name= "is_deleted",nullable = false)
+    private boolean isDeleted = false;
+
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
@@ -57,12 +60,14 @@ public class Event {
     private List<Ticket> tickets = new ArrayList<>();
 
     @Builder
-    private Event(Long festivalId, String name, int totalTickets, int remainingTickets, LocalDateTime openAt) {
+    private Event(Long festivalId, String name, int totalTickets, int remainingTickets, LocalDateTime openAt,
+                  String prefix) {
         this.festivalId = festivalId;
         this.name = name;
         this.totalTickets = totalTickets;
         this.remainingTickets = remainingTickets;
         this.openAt = openAt;
+        this.prefix = prefix;
     }
 
     public static Event from(EventCreateReqDto eventCreateReqDto) {
@@ -72,6 +77,7 @@ public class Event {
                 .totalTickets(eventCreateReqDto.getTotalTickets())
                 .remainingTickets(eventCreateReqDto.getTotalTickets())
                 .openAt(eventCreateReqDto.getOpenAt())
+                .prefix(eventCreateReqDto.getPrefix())
                 .build();
     }
 
@@ -80,5 +86,42 @@ public class Event {
             throw new BaseException(ErrorCode.TICKET_SOLD_OUT);
         }
         this.remainingTickets -= quantity;
+    }
+
+    public void updateEventInfo(EventInfoUpdateDto eventInfoUpdateDto){
+        if(LocalDateTime.now().isAfter(this.getOpenAt())){
+            throw new BaseException(ErrorCode.EVENT_ALREADY_OPEN);
+        }
+        this.name = eventInfoUpdateDto.getName();
+        this.totalTickets = eventInfoUpdateDto.getTotalTickets();
+        this.openAt = eventInfoUpdateDto.getOpenAt();
+        this.prefix = eventInfoUpdateDto.getPrefix();
+        this.remainingTickets = eventInfoUpdateDto.getTotalTickets();
+    }
+
+    public void updateName(EventNameUpdateDto eventNameUpdateDto){
+        this.name = eventNameUpdateDto.getName();
+    }
+
+    public void increaseTotalTickets(EventTotalTicketsUpdateDto eventTotalTicketsUpdateDto){
+        this.totalTickets += eventTotalTicketsUpdateDto.getIncreaseAmount();
+        this.remainingTickets += eventTotalTicketsUpdateDto.getIncreaseAmount();
+    }
+
+    public void updateIsFinished(EventIsFinishedUpdateDto eventIsFinishedUpdateDto){
+        if (eventIsFinishedUpdateDto.isFinished()) {
+            this.isFinished = true;
+            return;
+        }
+
+        if (this.remainingTickets <= 0) {
+            throw new BaseException(ErrorCode.NO_REMAINING_TICKETS);
+        }
+
+        this.isFinished = false;
+    }
+
+    public void softDeleted(){
+        this.isDeleted = true;
     }
 }
