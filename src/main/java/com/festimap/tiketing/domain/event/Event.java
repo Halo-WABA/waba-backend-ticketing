@@ -96,11 +96,11 @@ public class Event {
         }
     }
 
-    public void isRemainingTicketLeft(){
-        if(remainingTickets <= 0){
+    public void isRemainingTicketLeft() {
+        if (remainingTickets <= 0) {
             throw new BaseException(ErrorCode.TICKET_SOLD_OUT);
         }
-
+    }
     public void updateEventInfo(EventInfoUpdateDto eventInfoUpdateDto){
         if(LocalDateTime.now().isAfter(this.getOpenAt())){
             throw new BaseException(ErrorCode.EVENT_ALREADY_OPEN);
