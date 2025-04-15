@@ -2,10 +2,6 @@ package com.festimap.tiketing.domain.event.repository;
 
 import com.festimap.tiketing.domain.event.Event;
 import com.festimap.tiketing.domain.event.dto.EventCreateReqDto;
-import com.festimap.tiketing.domain.verification.Verification;
-import com.festimap.tiketing.domain.verification.dto.VerificationReqDto;
-import com.festimap.tiketing.domain.verification.repository.VerificationRepository;
-import com.festimap.tiketing.global.testsupport.TestTxManagerConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,9 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.dao.PessimisticLockingFailureException;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -24,7 +17,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.QueryTimeoutException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
