@@ -49,7 +49,8 @@ public class TicketRepositoryTest {
                 1L,
                 "테스트 이벤트",
                 LocalDateTime.now(),
-                1000
+                1000,
+                "MW"
         );
         event = Event.from(eventCreateReqDto);
 
