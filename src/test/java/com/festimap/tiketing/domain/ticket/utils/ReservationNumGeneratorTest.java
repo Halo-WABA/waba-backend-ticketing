@@ -18,7 +18,8 @@ public class ReservationNumGeneratorTest {
     @Test
     void 예매번호_생성() {
         int remaining = 42;
-        String reservationNum = ReservationNumGenerator.generate(remaining);
+        String prefix = "MW";
+        String reservationNum = ReservationNumGenerator.generate(prefix, remaining);
 
         System.out.println(reservationNum);
         assertEquals(17, reservationNum.length());

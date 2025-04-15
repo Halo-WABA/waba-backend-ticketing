@@ -9,13 +9,10 @@ import java.util.UUID;
 @Component
 public class ReservationNumGenerator {
 
-
-    private static final String PREFIX = "MW";
-
-    public static String generate(int remainingTicket) {
+    public static String generate(String eventPrefix, int remainingTicket) {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String random = UUID.randomUUID().toString().replace("-", "").substring(0, 5).toUpperCase();
         String formatted = String.format("%04d", remainingTicket);
-        return PREFIX + date + random + formatted;
+        return eventPrefix + date + random + formatted;
     }
 }

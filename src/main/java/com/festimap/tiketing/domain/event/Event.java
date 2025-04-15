@@ -46,6 +46,9 @@ public class Event {
     @Column(name = "is_finished", nullable = false)
     private boolean isFinished = false;
 
+    @Column(name = "prefix", nullable = false)
+    private String prefix;
+
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
