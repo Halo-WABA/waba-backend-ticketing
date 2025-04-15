@@ -3,6 +3,7 @@ package com.festimap.tiketing.domain.ticket.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
+import com.festimap.tiketing.domain.ticket.service.TicketService;
 import com.festimap.tiketing.domain.verification.controller.VerificationController;
 import com.festimap.tiketing.global.config.security.SecurityConfig;
 import com.festimap.tiketing.global.testsupport.ControllerTestSecurityBeans;
@@ -41,7 +42,7 @@ public class TicketControllerTest {
     private JwtProvider jwtProvider;
 
     @MockBean
-    private BlockingQueue<TicketRequest> ticketQueue;
+    private TicketService ticketService;
 
     @Test
     void 티켓발급요청_검증() throws Exception {
