@@ -53,7 +53,10 @@ public class NaverSmsClient implements SmsClient {
                 .body(smsSendRequest)
                 .build();
         try {
+            long startTime = System.currentTimeMillis();
             restTemplate.postForObject(url, httpEntity, NaverSmsResDto.class);
+            long endTime = System.currentTimeMillis();
+            log.info("duration : {}",endTime - startTime+"ms");
         }
         catch(Exception e) {
             log.error("Failed to send SMS. request={}", smsSendRequest.getTo(), e);
