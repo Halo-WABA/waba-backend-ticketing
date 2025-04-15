@@ -41,7 +41,7 @@ public class TicketService {
     }
 
     private void isExistTicketBy(Long eventId, String phoneNo) {
-        if(ticketRepository.existsByEventIdAndPhoneNumber(eventId, phoneNo)){
+        if(ticketRepository.findByEventIdAndPhoneNumberWithEvent(eventId, phoneNo).isPresent()){
             throw new BaseException(ErrorCode.TICKET_EXIST_BY_PHONENUM);
         }
     }
