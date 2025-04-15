@@ -60,7 +60,7 @@ public class VerificationServiceTest {
         verification = Verification.from(verificationReqDto);
         verification.updateVerificationCode();
         EventCreateReqDto eventCreateReqDto =
-                new EventCreateReqDto(1L,"1차 예매", LocalDateTime.now(),10);
+                new EventCreateReqDto(1L,"1차 예매", LocalDateTime.now(),10,"MW");
         event = Event.from(eventCreateReqDto);
     }
 
