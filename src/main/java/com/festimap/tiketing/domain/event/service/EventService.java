@@ -73,7 +73,7 @@ public class EventService {
     @Transactional
     public void softDeletedEvent(Long id){
         Event event = loadEventOrThrow(id);
-        event.softDeleted();
+        event.softDelete();
     }
 
     private Event loadEventOrThrow(Long id){

@@ -158,7 +158,7 @@ public class EventTest {
     @Test
     void event_softDeleted_테스트(){
         //wehn
-        event.softDeleted();
+        event.softDelete();
 
         //then
         assertThat(event.isDeleted()).isTrue();

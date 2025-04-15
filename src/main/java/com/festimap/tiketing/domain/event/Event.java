@@ -121,7 +121,7 @@ public class Event {
         this.isFinished = false;
     }
 
-    public void softDeleted(){
+    public void softDelete(){
         this.isDeleted = true;
     }
 }
