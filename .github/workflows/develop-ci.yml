@@ -48,8 +48,8 @@ jobs:
       - name: Upload jar to S3
         run: |
           aws s3 cp \
-            build/libs/eventer-0.0.1-SNAPSHOT.jar \
-            s3://${{ secrets.BUCKET_NAME }}/ticketing/eventer-0.0.1-SNAPSHOT.jar
+            build/libs/ticketing-0.0.1-SNAPSHOT.jar \
+            s3://${{ secrets.BUCKET_NAME }}/backend/ticketing-0.0.1-SNAPSHOT.jar
 
         env:
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
