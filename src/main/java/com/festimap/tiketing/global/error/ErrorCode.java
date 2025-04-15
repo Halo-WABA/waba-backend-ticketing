@@ -40,8 +40,6 @@ public enum ErrorCode {
     // Event
     EVENT_ALREADY_OPEN("EVT001", "Cannot modify event after open time", 400),
     NO_REMAINING_TICKETS("EVT002", "Cannot reopen event: no remaining tickets", 400),
-
-
     ;
 
     private final String code;

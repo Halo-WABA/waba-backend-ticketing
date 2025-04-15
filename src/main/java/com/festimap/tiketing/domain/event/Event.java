@@ -86,6 +86,9 @@ public class Event {
             throw new BaseException(ErrorCode.TICKET_SOLD_OUT);
         }
         this.remainingTickets -= quantity;
+        if(remainingTickets == 0) {
+            isFinished = true;
+        }
     }
    public void isOpen(){
         if(!LocalDateTime.now().isAfter(openAt)){

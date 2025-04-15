@@ -19,13 +19,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TicketController {
 
     private final TicketService ticketService;
-    private AtomicLong requestOrder = new AtomicLong(0);
 
     @PostMapping("/tickets/apply")
     public void apply(@Validated @RequestBody TicketRequest request) {
-        if (requestOrder.incrementAndGet() > 2400) {
-            throw new BaseException(ErrorCode.TICKET_RESERVATION_CLOSED);
-        }
         ticketService.offerQueue(request);
     }
 }
