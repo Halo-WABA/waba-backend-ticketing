@@ -4,6 +4,7 @@ import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,9 @@ public class TicketController {
     private AtomicLong requestOrder = new AtomicLong(0);
 
     @PostMapping("/tickets/apply")
-    public String apply(@RequestBody TicketRequest request) {
+    public void apply(@Validated @RequestBody TicketRequest request) {
         if (requestOrder.incrementAndGet() > 2400 || !ticketQueue.offer(request)) {
             throw new BaseException(ErrorCode.TICKET_RESERVATION_CLOSED);
         }
-        return "신청됐습니다.";
     }
 }
