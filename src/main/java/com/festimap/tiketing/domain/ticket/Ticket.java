@@ -31,7 +31,7 @@ public class Ticket {
     @Column(name = "count", nullable = false)
     private int count;
 
-    @Column(name = "reservation_number", length = 10, nullable = false)
+    @Column(name = "reservation_number", length = 17, nullable = false)
     private String reservationNumber;
 
     @Column(name = "phone_number", length = 11, nullable = false)
