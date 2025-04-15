@@ -81,4 +81,16 @@ public class Event {
         }
         this.remainingTickets -= quantity;
     }
+
+    public void isOpen(){
+        if(!LocalDateTime.now().isAfter(openAt)){
+            throw new BaseException(ErrorCode.TICKET_SERVER_NOT_OPEN);
+        }
+    }
+
+    public void isRemainingTicketLeft(){
+        if(remainingTickets <= 0){
+            throw new BaseException(ErrorCode.TICKET_SOLD_OUT);
+        }
+    }
 }

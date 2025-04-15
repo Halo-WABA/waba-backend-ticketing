@@ -36,7 +36,7 @@ public enum ErrorCode {
     TICKET_RESERVATION_CLOSED("T001", "Ticket Reservation Closed",429),
     TICKET_EXIST_BY_PHONENUM("T002", "Ticket Exist By Phone Number",400),
     TICKET_SOLD_OUT("T003", "Not enough tickets remaining", 400),
-
+    TICKET_SERVER_NOT_OPEN("T004", "Reserving ticket is not available", 400)
     ;
 
     private final String code;
