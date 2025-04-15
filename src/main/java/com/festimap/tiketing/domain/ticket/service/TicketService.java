@@ -22,19 +22,22 @@ public class TicketService {
     @Transactional
     public void reserve(TicketRequest request) {
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
-        Ticket ticket = Ticket.from(request);
+        Event event = loadEventOrThrow(request.getEventId());
+        Ticket ticket = Ticket.of(request, event);
         ticketRepository.save(ticket);
     }
 
     @Transactional
     public void reserveWithLock(TicketRequest request) {
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
-
-        Event event = eventRepository.findByIdWithLock(request.getEventId())
-                .orElseThrow(()-> new EventNotFoundException(request.getEventId()));
-
+        Event event = loadEventOrThrow(request.getEventId());
         event.decreaseRemainingTickets(request.getTicketCount());
         ticketRepository.save(Ticket.of(request,event));
+    }
+
+    private Event loadEventOrThrow(Long eventId) {
+        return eventRepository.findByIdWithLock(eventId)
+                .orElseThrow(() -> new EventNotFoundException(eventId));
     }
 
     private void isExistTicketBy(Long eventId, String phoneNo) {

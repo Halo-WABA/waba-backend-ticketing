@@ -48,16 +48,9 @@ public class Ticket {
     @Builder
     private Ticket(int count, String phoneNo, Event event) {
         this.count = count;
-        this.reservationNumber = ReservationNumGenerator.generate();
+        this.reservationNumber = ReservationNumGenerator.generate(event.getPrefix(), event.getRemainingTickets());
         this.phoneNumber = phoneNo;
         this.event = event;
-    }
-
-    public static Ticket from(TicketRequest request){
-        return Ticket.builder()
-                .count(request.getTicketCount())
-                .phoneNo(request.getPhoneNumber())
-                .build();
     }
 
     public static Ticket of(TicketRequest ticketRequest, Event event){
