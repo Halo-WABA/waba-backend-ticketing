@@ -90,7 +90,14 @@ public class Event {
             isFinished = true;
         }
     }
-   public void isOpen(){
+
+    public void isEventFinished(){
+        if(isFinished){
+            throw new BaseException(ErrorCode.TICKET_SERVICE_FINISHED);
+        }
+    }
+
+    public void isOpen(){
         if(!LocalDateTime.now().isAfter(openAt)){
             throw new BaseException(ErrorCode.TICKET_SERVER_NOT_OPEN);
         }

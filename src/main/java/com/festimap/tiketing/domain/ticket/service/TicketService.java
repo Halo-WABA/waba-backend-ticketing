@@ -6,6 +6,9 @@ import com.festimap.tiketing.domain.event.repository.EventRepository;
 import com.festimap.tiketing.domain.ticket.Ticket;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.domain.ticket.repository.TicketRepository;
+import com.festimap.tiketing.domain.verification.Verification;
+import com.festimap.tiketing.domain.verification.exception.VerificationNotFoundException;
+import com.festimap.tiketing.domain.verification.repository.VerificationRepository;
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +25,13 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
+    private final VerificationRepository verificationRepository;
     private final BlockingQueue<TicketRequest> ticketQueue;
 
     @Transactional
     public void offerQueue(TicketRequest request){
         Event event = loadEventOrThrow(request.getEventId());
+        event.isEventFinished();
         event.isOpen();
         event.isRemainingTicketLeft();
         canOfferQueue(request);
@@ -34,6 +39,8 @@ public class TicketService {
 
     @Transactional
     public void reserve(TicketRequest request) {
+        Verification verification = loadVerificationOrThrow(request);
+        verification.ensureVerificationIsValid();
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         Event event = loadEventOrThrow(request.getEventId());
         event.decreaseRemainingTickets(request.getTicketCount());
@@ -43,6 +50,8 @@ public class TicketService {
 
     @Transactional
     public void reserveWithLock(TicketRequest request) {
+        Verification verification = loadVerificationOrThrow(request);
+        verification.ensureVerificationIsValid();
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         Event event = loadEventWithLockOrThrow(request.getEventId());
         event.decreaseRemainingTickets(request.getTicketCount());
@@ -57,6 +66,11 @@ public class TicketService {
     private Event loadEventOrThrow(Long eventId){
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
+    }
+
+    private Verification loadVerificationOrThrow(TicketRequest request) {
+        return verificationRepository.findByPhoneNumber(request.getPhoneNumber())
+                .orElseThrow(() -> new VerificationNotFoundException(request.getPhoneNumber()));
     }
 
     private void isExistTicketBy(Long eventId, String phoneNo) {

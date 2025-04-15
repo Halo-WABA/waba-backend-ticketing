@@ -30,13 +30,14 @@ public enum ErrorCode {
     // Verification
     INVALID_VERIFICATION_CODE("V001", "Invalid Verification Code",400),
     EXPIRED_VERIFICATION_CODE("V002", "Verification code has expired", 400),
-
+    VERIFICATION_REQUIRED("V003", "Verification has not been completed", 400),
 
     // Ticketing
     TICKET_RESERVATION_CLOSED("T001", "Ticket Reservation Closed",429),
     TICKET_EXIST_BY_PHONENUM("T002", "Ticket Exist By Phone Number",400),
     TICKET_SOLD_OUT("T003", "Not enough tickets remaining", 400),
     TICKET_SERVER_NOT_OPEN("T004", "Ticket Server Not Open", 400),
+    TICKET_SERVICE_FINISHED("T005", "Ticket Service is Finished", 400),
   
     // Event
     EVENT_ALREADY_OPEN("EVT001", "Cannot modify event after open time", 400),
