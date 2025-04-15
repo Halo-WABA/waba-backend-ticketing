@@ -90,6 +90,16 @@ public class Event {
             isFinished = true;
         }
     }
+   public void isOpen(){
+        if(!LocalDateTime.now().isAfter(openAt)){
+            throw new BaseException(ErrorCode.TICKET_SERVER_NOT_OPEN);
+        }
+    }
+
+    public void isRemainingTicketLeft(){
+        if(remainingTickets <= 0){
+            throw new BaseException(ErrorCode.TICKET_SOLD_OUT);
+        }
 
     public void updateEventInfo(EventInfoUpdateDto eventInfoUpdateDto){
         if(LocalDateTime.now().isAfter(this.getOpenAt())){
