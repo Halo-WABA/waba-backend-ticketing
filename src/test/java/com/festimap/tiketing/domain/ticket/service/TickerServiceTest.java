@@ -60,7 +60,8 @@ public class TickerServiceTest {
                 1L,
                 "테스트 이벤트",
                 LocalDateTime.of(2025, 4,13, 12, 0),
-                1000
+                1000,
+                "MW"
         );
         event = Event.from(eventCreateReqDto);
         setField(event, "id", 1L);
