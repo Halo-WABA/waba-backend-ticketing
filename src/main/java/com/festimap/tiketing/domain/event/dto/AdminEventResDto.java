@@ -22,11 +22,12 @@ public class AdminEventResDto {
     private int remainingTickets;
     private LocalDateTime openAt;
     private boolean isFinished;
+    private String prefix;
     private LocalDateTime createdAt;
 
     @Builder
     private AdminEventResDto(Long id, String name, int totalTickets, int remainingTickets, LocalDateTime openAt,
-                            boolean isFinished, LocalDateTime createdAt) {
+                            boolean isFinished, LocalDateTime createdAt,String prefix) {
         this.id = id;
         this.name = name;
         this.totalTickets = totalTickets;
@@ -34,6 +35,7 @@ public class AdminEventResDto {
         this.openAt = openAt;
         this.isFinished = isFinished;
         this.createdAt = createdAt;
+        this.prefix = prefix;
     }
 
     public static AdminEventResDto from(Event event) {
@@ -45,6 +47,7 @@ public class AdminEventResDto {
                 .openAt(event.getOpenAt())
                 .isFinished(event.isFinished())
                 .createdAt(event.getCreatedAt())
+                .prefix(event.getPrefix())
                 .build();
     }
 }

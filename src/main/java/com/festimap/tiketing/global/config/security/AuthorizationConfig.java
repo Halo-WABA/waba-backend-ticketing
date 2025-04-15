@@ -11,6 +11,7 @@ public class AuthorizationConfig {
         http.authorizeRequests()
                 .antMatchers(SecurityConstants.SWAGGER_URLS).permitAll()
                 .antMatchers(SecurityConstants.PUBLIC_POST_URLS).permitAll()
+                .antMatchers(SecurityConstants.PUBLIC_GET_URLS).permitAll()
                 .anyRequest().authenticated();
     }
 }
