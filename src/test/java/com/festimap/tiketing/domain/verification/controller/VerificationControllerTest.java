@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +45,9 @@ public class VerificationControllerTest {
     @Test
     void 인증코드_전송_요청_테스트()throws Exception{
         //given
-        VerificationReqDto verificationReqDto = new VerificationReqDto("01012345678");
+        VerificationReqDto verificationReqDto = new VerificationReqDto();
+        setField(verificationReqDto, "eventId", 1L);
+        setField(verificationReqDto, "phoneNumber", "01012345678");
         doNothing().when(verificationService).sendVerificationCode(any());
 
         //when & then

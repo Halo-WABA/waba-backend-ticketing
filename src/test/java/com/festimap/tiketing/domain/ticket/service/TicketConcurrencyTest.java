@@ -4,7 +4,6 @@ package com.festimap.tiketing.domain.ticket.service;
 import com.festimap.tiketing.domain.event.Event;
 import com.festimap.tiketing.domain.event.dto.EventCreateReqDto;
 import com.festimap.tiketing.domain.event.repository.EventRepository;
-import com.festimap.tiketing.domain.event.service.EventService;
 import com.festimap.tiketing.domain.ticket.Ticket;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.domain.ticket.repository.TicketRepository;
@@ -34,9 +33,6 @@ public class TicketConcurrencyTest {
 
     @Autowired
     private TicketRepository ticketRepository;
-
-    @Autowired
-    private EventService eventService;
 
     private Event event;
     @Autowired

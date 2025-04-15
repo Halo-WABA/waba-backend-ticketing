@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(SpringExtension.class)
 @Disabled
@@ -32,7 +33,9 @@ public class VerificationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        VerificationReqDto verificationReqDto = new VerificationReqDto("01012345678");
+        VerificationReqDto verificationReqDto = new VerificationReqDto();
+        setField(verificationReqDto, "eventId", 1L);
+        setField(verificationReqDto, "phoneNumber", "01012345678");
         verification = verificationRepository.save(Verification.from(verificationReqDto));
     }
 

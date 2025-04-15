@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 @Entity
 @Table(name = "verification",
