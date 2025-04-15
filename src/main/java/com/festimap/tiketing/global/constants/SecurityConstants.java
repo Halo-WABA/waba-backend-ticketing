@@ -14,4 +14,8 @@ public class SecurityConstants {
             "/api/verification/check/code",
             "/api/tickets/apply"
     };
+
+    public static final String[] PUBLIC_GET_URLS = {
+            "/api/event"
+    };
 }
