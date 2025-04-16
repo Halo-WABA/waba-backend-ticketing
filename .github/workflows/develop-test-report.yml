@@ -1,0 +1,107 @@
+name: Codacy Analysis
+
+on:
+  pull_request:
+    branches: [ "develop" ]
+    
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      # (1) 소스코드 체크아웃
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # (2) application.yml 생성
+      - name: Create application.yml
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.APP_YML }}" > src/main/resources/application.yml
+
+      # (3) JDK 설정
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'  
+
+      # (4) Gradle 빌드 (테스트 포함)
+      - name: Build and Test (Gradle)
+        id: test_step
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean test jacocoTestReport
+        continue-on-error: true  # 테스트 실패 시에도 다음 단계 진행
+
+      # (5) Codacy 코드 분석 실행
+      - name: Run Codacy Analysis
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
+            -t $CODACY_PROJECT_TOKEN \
+            -r build/reports/jacoco/test/jacocoTestReport.xml
+
+      # (6) PR에 테스트 결과 추가
+      - name: Add Detailed Test Result to PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            // 기본 상태 메시지
+            const status = "${{ steps.test_step.outcome }}" === "success"
+              ? "✅ **테스트 성공**"
+              : "❌ **테스트 실패**";
+
+            // 테스트 HTML 경로
+            const testResultsPath = 'build/reports/tests/test/index.html';
+            let totalTests = "알 수 없음", failedTests = "알 수 없음", ignoredTests = "알 수 없음", testDuration = "알 수 없음";
+
+            if (fs.existsSync(testResultsPath)) {
+              const html = fs.readFileSync(testResultsPath, 'utf8');
+              const totalMatch = html.match(/<div class="counter">(\d+)<\/div>\s*<p>tests<\/p>/);
+              const failedMatch = html.match(/<div class="counter">(\d+)<\/div>\s*<p>failures<\/p>/);
+              const ignoredMatch = html.match(/<div class="counter">(\d+)<\/div>\s*<p>ignored<\/p>/);
+              const durationMatch = html.match(/<div class="counter">([\d.]+)s<\/div>\s*<p>duration<\/p>/);
+
+              totalTests = totalMatch ? totalMatch[1] : "알 수 없음";
+              failedTests = failedMatch ? failedMatch[1] : "알 수 없음";
+              ignoredTests = ignoredMatch ? ignoredMatch[1] : "알 수 없음";
+              testDuration = durationMatch ? `${parseFloat(durationMatch[1]).toFixed(2)} 초` : "알 수 없음";
+            }
+
+            // 커버리지 XML 경로
+            const coveragePath = 'build/reports/jacoco/test/jacocoTestReport.xml';
+            let lineCoverage = "알 수 없음";
+
+            if (fs.existsSync(coveragePath)) {
+              const xml = fs.readFileSync(coveragePath, 'utf8');
+              const match = xml.match(/<report .* line-rate="([\d.]+)"/);
+              if (match) {
+                const rate = parseFloat(match[1]) * 100;
+                lineCoverage = `${rate.toFixed(2)}%`;
+              }
+            }
+
+            const message = `### 🚨 테스트 결과
+            - **상태:** ${status}
+            - **테스트 개수:** ${totalTests} 개
+            - **실패한 테스트:** ${failedTests} 개
+            - **무시된 테스트:** ${ignoredTests} 개
+            - **실행 시간:** ${testDuration}
+            - 📈 **테스트 커버리지:** ${lineCoverage}
+            - 🔍 **커버리지 리포트:** \`build/reports/jacoco/test/index.html\`
+            - 📦 **커밋 SHA:** \`${{ github.sha }}\``;
+
+            const issueNumber = context.issue.number || context.payload.pull_request?.number;
+
+            github.rest.issues.createComment({
+              issue_number: issueNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
