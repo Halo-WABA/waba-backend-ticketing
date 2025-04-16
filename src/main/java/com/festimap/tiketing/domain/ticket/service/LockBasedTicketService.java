@@ -12,8 +12,6 @@ import com.festimap.tiketing.domain.verification.repository.VerificationReposito
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LockBasedTicketService implements TicketService{
 
-    private static final Logger log = LoggerFactory.getLogger(LockBasedTicketService.class);
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
     private final VerificationRepository verificationRepository;
