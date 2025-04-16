@@ -1,6 +1,5 @@
 package com.festimap.tiketing.domain.ticket.service;
 
-
 import com.festimap.tiketing.domain.event.Event;
 import com.festimap.tiketing.domain.event.exception.EventNotFoundException;
 import com.festimap.tiketing.domain.event.repository.EventRepository;
@@ -27,10 +26,9 @@ public class LockBasedTicketService implements TicketService{
     @Override
     @Transactional
     public void reserve(TicketRequest request) {
-        validateEventOpenAt(request);
         validateVerification(request);
-
         Event event = loadEventWithLockOrThrow(request.getEventId());
+        event.validateIsOpenAt();
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         event.decreaseRemainingTickets(request.getTicketCount());
         ticketRepository.save(Ticket.of(request,event));
@@ -52,11 +50,5 @@ public class LockBasedTicketService implements TicketService{
     private Event loadEventWithLockOrThrow(Long eventId) {
         return eventRepository.findByIdWithLock(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-    }
-
-    private void validateEventOpenAt(TicketRequest request){
-        Event preview = eventRepository.findById(request.getEventId())
-                .orElseThrow(() -> new EventNotFoundException(request.getEventId()));
-        preview.isOpen();
     }
 }

@@ -97,7 +97,7 @@ public class Event {
         }
     }
 
-    public void isOpen(){
+    public void validateIsOpenAt(){
         if(LocalDateTime.now().isBefore(this.openAt)){
             throw new BaseException(ErrorCode.TICKET_SERVER_NOT_OPEN);
         }

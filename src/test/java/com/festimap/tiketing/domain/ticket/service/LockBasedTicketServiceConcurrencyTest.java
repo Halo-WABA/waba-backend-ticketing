@@ -7,12 +7,14 @@ import com.festimap.tiketing.domain.event.repository.EventRepository;
 import com.festimap.tiketing.domain.ticket.Ticket;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.domain.ticket.repository.TicketRepository;
+import com.festimap.tiketing.domain.verification.Verification;
+import com.festimap.tiketing.domain.verification.repository.VerificationRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,15 +27,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringBootTest
-@Disabled("verification 검증 환경 추가 필요")
+@ActiveProfiles("test")
 @SuppressWarnings("NonAsciiCharacters")
-public class TicketConcurrencyTest {
+public class LockBasedTicketServiceConcurrencyTest {
 
     @Autowired
     private EventRepository eventRepository;
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private VerificationRepository verificationRepository;
 
     private Event event;
 
@@ -45,9 +50,22 @@ public class TicketConcurrencyTest {
     void setUp(){
         ticketRepository.deleteAll();
         eventRepository.deleteAll();
+        verificationRepository.deleteAll();
 
         EventCreateReqDto eventCreateReqDto =
                 new EventCreateReqDto(1L,"1차 예매", LocalDateTime.now(),10,"MW");
+
+        for (int i = 0; i < 20; i++) {
+            Verification verification = Verification.builder().build();
+            setField(verification, "phoneNumber", String.format("%d", i));
+            setField(verification, "code", "123456"); // 임의의 고정 코드
+            setField(verification, "codeExpiredAt", LocalDateTime.now().plusMinutes(3));
+            setField(verification, "verifiedExpiredAt", LocalDateTime.now().plusMinutes(10));
+            setField(verification, "isVerified", true); // 필요한 경우 true로 설정
+
+            verificationRepository.save(verification);
+        }
+
 
         event = eventRepository.save(Event.from(eventCreateReqDto));
     }
