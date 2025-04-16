@@ -78,6 +78,12 @@ public class Verification {
         this.verifiedExpiredAt = LocalDateTime.now().plusHours(1);
     }
 
+    public void ensureVerificationIsValid() {
+        if (!this.isVerified || this.verifiedExpiredAt.isBefore(LocalDateTime.now())) {
+            throw new BaseException(ErrorCode.VERIFICATION_REQUIRED);
+        }
+    }
+
     private static String generateCode(){
         return CodeGenerator.generateCode();
     }
