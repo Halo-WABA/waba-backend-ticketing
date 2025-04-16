@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringBootTest
-@Disabled
+@Disabled("verification 검증 환경 추가 필요")
 @SuppressWarnings("NonAsciiCharacters")
 public class TicketConcurrencyTest {
 
@@ -35,7 +36,9 @@ public class TicketConcurrencyTest {
     private TicketRepository ticketRepository;
 
     private Event event;
+
     @Autowired
+    @Qualifier("lockBased")
     private TicketService ticketService;
 
     @BeforeEach
@@ -68,7 +71,7 @@ public class TicketConcurrencyTest {
                     setField(request, "phoneNumber", String.format("%d",userIndex));
                     setField(request, "ticketCount", 1);
 
-                    ticketService.reserveWithLock(request);
+                    ticketService.reserve(request);
                 } catch (Exception e) {
                     errorCnt.incrementAndGet();
                 } finally {
