@@ -10,12 +10,10 @@ import com.festimap.tiketing.domain.ticket.repository.TicketRepository;
 import com.festimap.tiketing.domain.verification.Verification;
 import com.festimap.tiketing.domain.verification.repository.VerificationRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -31,7 +29,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 @SpringBootTest
 @ActiveProfiles("test")
 @SuppressWarnings("NonAsciiCharacters")
-public class TicketConcurrencyTest {
+public class LockBasedTicketServiceConcurrencyTest {
 
     @Autowired
     private EventRepository eventRepository;
