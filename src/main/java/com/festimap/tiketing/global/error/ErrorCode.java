@@ -39,7 +39,7 @@ public enum ErrorCode {
     TICKET_SERVER_NOT_OPEN("T004", "Ticket Server Not Open", 400),
     TICKET_SERVICE_FINISHED("T005", "Ticket Service is Finished", 400),
     NOT_SUPPORTED_STRATEGY("T006","Not Supported Strategy",400),
-    TICKET_SERVICE_CONGESTED("TOO7", "Ticketing Service Congested",500),
+    TICKET_SERVICE_CONGESTED("T007", "Ticketing Service Congested",500),
 
     // Event
     EVENT_ALREADY_OPEN("EVT001", "Cannot modify event after open time", 400),
