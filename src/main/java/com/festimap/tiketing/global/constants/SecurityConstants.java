@@ -16,6 +16,7 @@ public class SecurityConstants {
     };
 
     public static final String[] PUBLIC_GET_URLS = {
-            "/api/event"
+            "/api/event",
+            "/api/event/isOpen"
     };
 }

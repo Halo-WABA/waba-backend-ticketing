@@ -98,9 +98,10 @@ public class Event {
     }
 
     public void isOpen(){
-        if(!LocalDateTime.now().isAfter(openAt)){
+        if(LocalDateTime.now().isBefore(this.openAt)){
             throw new BaseException(ErrorCode.TICKET_SERVER_NOT_OPEN);
         }
+
     }
 
     public void isRemainingTicketLeft() {
