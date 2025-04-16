@@ -12,7 +12,8 @@ public class SecurityConstants {
     public static final String[] PUBLIC_POST_URLS = {
             "/api/verification/send/code",
             "/api/verification/check/code",
-            "/api/tickets/apply"
+            "/api/tickets/apply",
+            "/api/sms/mockserver"
     };
 
     public static final String[] PUBLIC_GET_URLS = {
