@@ -38,7 +38,9 @@ public enum ErrorCode {
     TICKET_SOLD_OUT("T003", "Not enough tickets remaining", 400),
     TICKET_SERVER_NOT_OPEN("T004", "Ticket Server Not Open", 400),
     TICKET_SERVICE_FINISHED("T005", "Ticket Service is Finished", 400),
-  
+    NOT_SUPPORTED_STRATEGY("T006","Not Supported Strategy",400),
+    TICKET_SERVICE_CONGESTED("T007", "Ticketing Service Congested",500),
+
     // Event
     EVENT_ALREADY_OPEN("EVT001", "Cannot modify event after open time", 400),
     NO_REMAINING_TICKETS("EVT002", "Cannot reopen event: no remaining tickets", 400),

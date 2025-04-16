@@ -2,7 +2,7 @@ package com.festimap.tiketing.domain.ticket.worker;
 
 
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
-import com.festimap.tiketing.domain.ticket.service.TicketService;
+import com.festimap.tiketing.domain.ticket.service.QueueBasedTicketService;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 public class TicketRequestQueueWorker {
 
     private final BlockingQueue<TicketRequest> ticketQueue;
-    private final TicketService ticketService;
+    private final QueueBasedTicketService queueBasedTicketService;
 
     @PostConstruct
     public void start() {
@@ -28,7 +28,8 @@ public class TicketRequestQueueWorker {
     private void processQueue() {
         while (true) {
             try {
-                ticketService.reserve(ticketQueue.take());
+                TicketRequest request = ticketQueue.take();
+                queueBasedTicketService.processTicketRequest(request);
             } catch (BaseException e) {
                 log.warn("업무 예외 발생 - 사용자 요청 처리 실패: {}", e.getMessage());
             } catch (Exception e) {
