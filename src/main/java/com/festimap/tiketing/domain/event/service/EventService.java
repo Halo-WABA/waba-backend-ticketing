@@ -45,7 +45,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public void isOpen(Long id){
         Event event = loadEventOrThrow(id);
-        event.isOpen();
+        event.validateIsOpenAt();
     }
 
     @Transactional

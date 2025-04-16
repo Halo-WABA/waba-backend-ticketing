@@ -20,6 +20,13 @@ jwt:
   token:
     secret: 1234qw3r123456789098a1nwi23iasdnkzjxdjkwjeqwekjdzkjdhaskjdnxncnnmszdaseqweqweqeqwewqeqw
 
+naver-cloud-sms:
+  api-base-url: url
+  accessKey: 0
+  secretKey: 0
+  serviceId: 0
+  senderPhone: 01012345678
+  to: 01012345678
 
 logging:
   level:

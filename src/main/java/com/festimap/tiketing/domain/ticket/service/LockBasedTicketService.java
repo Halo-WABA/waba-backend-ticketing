@@ -1,6 +1,5 @@
 package com.festimap.tiketing.domain.ticket.service;
 
-
 import com.festimap.tiketing.domain.event.Event;
 import com.festimap.tiketing.domain.event.exception.EventNotFoundException;
 import com.festimap.tiketing.domain.event.repository.EventRepository;
@@ -13,6 +12,8 @@ import com.festimap.tiketing.domain.verification.repository.VerificationReposito
 import com.festimap.tiketing.global.error.ErrorCode;
 import com.festimap.tiketing.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LockBasedTicketService implements TicketService{
 
+    private static final Logger log = LoggerFactory.getLogger(LockBasedTicketService.class);
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
     private final VerificationRepository verificationRepository;
@@ -27,10 +29,9 @@ public class LockBasedTicketService implements TicketService{
     @Override
     @Transactional
     public void reserve(TicketRequest request) {
-        validateEventOpenAt(request);
         validateVerification(request);
-
         Event event = loadEventWithLockOrThrow(request.getEventId());
+        event.validateIsOpenAt();
         isExistTicketBy(request.getEventId(), request.getPhoneNumber());
         event.decreaseRemainingTickets(request.getTicketCount());
         ticketRepository.save(Ticket.of(request,event));
@@ -52,11 +53,5 @@ public class LockBasedTicketService implements TicketService{
     private Event loadEventWithLockOrThrow(Long eventId) {
         return eventRepository.findByIdWithLock(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-    }
-
-    private void validateEventOpenAt(TicketRequest request){
-        Event preview = eventRepository.findById(request.getEventId())
-                .orElseThrow(() -> new EventNotFoundException(request.getEventId()));
-        preview.isOpen();
     }
 }
