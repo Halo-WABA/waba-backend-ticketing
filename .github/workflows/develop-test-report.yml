@@ -68,27 +68,30 @@ jobs:
             // 커버리지 XML 경로
             const coveragePath = 'build/reports/jacoco/test/jacocoTestReport.xml';
             let lineCoverage = "알 수 없음";
-            if (match) {
-              const rate = parseFloat(match[1]) * 100;
-              lineCoverage = `${rate.toFixed(2)}%`;
-            }
-            else {
+            if (fs.existsSync(coveragePath)) {
+              const xml = fs.readFileSync(coveragePath, 'utf8');
+              const match = xml.match(/<report[^>]*line-rate="([\d.]+)"/);
+              if (match) {
+                const rate = parseFloat(match[1]) * 100;
+                lineCoverage = `${rate.toFixed(2)}%`;
+              }
+              else {
               // 백업 방식: counter 태그에서 직접 계산
-              const counterMatch = xml.match(/<counter type="LINE" missed="(\d+)" covered="(\d+)"\/?>/);
-              if (counterMatch) {
-                const missed = parseInt(counterMatch[1], 10);
-                const covered = parseInt(counterMatch[2], 10);
-                const total = missed + covered;
-                if (total > 0) {
-                  const coverage = (covered / total) * 100;
-                  lineCoverage = `${coverage.toFixed(2)}%`;
-                } 
-                else {
-                lineCoverage = "0.00%"; // 전체 라인 없음
+                const counterMatch = xml.match(/<counter type="LINE" missed="(\d+)" covered="(\d+)"\/?>/);
+                if (counterMatch) {
+                  const missed = parseInt(counterMatch[1], 10);
+                  const covered = parseInt(counterMatch[2], 10);
+                  const total = missed + covered;
+                  if (total > 0) {
+                    const coverage = (covered / total) * 100;
+                    lineCoverage = `${coverage.toFixed(2)}%`;
+                  } 
+                  else {
+                    lineCoverage = "0.00%"; // 전체 라인 없음
+                  }
                 }
               }
             }
-          
 
             const message = `### 🚨 테스트 결과
             - **상태:** ${status}
