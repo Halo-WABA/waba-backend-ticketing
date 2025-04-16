@@ -80,6 +80,9 @@ dependencies {
 
 	// guava
 	implementation("com.google.guava:guava:33.4.0-jre")
+
+	// wiremock
+	implementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
 }
 
 tasks.named('test') {
