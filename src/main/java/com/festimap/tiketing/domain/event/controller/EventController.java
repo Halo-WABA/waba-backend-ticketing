@@ -34,6 +34,11 @@ public class EventController {
         return eventService.getEventForUser(id);
     }
 
+    @GetMapping("/event/isOpen")
+    public void isEventOpen(@RequestParam(name = "id") Long id){
+        eventService.isOpen(id);
+    }
+
     @PutMapping("/admin/event")
     public AdminEventResDto updateEventInfo(@RequestParam(name = "id") Long id,
                                            @RequestBody EventInfoUpdateDto eventInfoUpdateDto){

@@ -42,6 +42,12 @@ public class EventService {
         return UserEventResDto.from(event);
     }
 
+    @Transactional(readOnly = true)
+    public void isOpen(Long id){
+        Event event = loadEventOrThrow(id);
+        event.isOpen();
+    }
+
     @Transactional
     public AdminEventResDto updateEventInfoBeforeOpenAt(Long id, EventInfoUpdateDto eventInfoUpdateDto){
         Event event = loadEventOrThrow(id);
