@@ -74,6 +74,6 @@ public class QueueBasedTicketService implements TicketService{
     private void validateEventOpenAt(TicketRequest request){
         Event preview = eventRepository.findById(request.getEventId())
                 .orElseThrow(() -> new EventNotFoundException(request.getEventId()));
-        preview.isOpen();
+        preview.validateIsOpenAt();
     }
 }

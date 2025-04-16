@@ -32,7 +32,7 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 @ActiveProfiles("test")
 @SuppressWarnings("NonAsciiCharacters")
 @Disabled("queueBased 구현방향 개선후 수정")
-public class TickerServiceTest {
+public class QueueBasedTicketServiceTest {
 
     @Mock
     private TicketRepository ticketRepository;
