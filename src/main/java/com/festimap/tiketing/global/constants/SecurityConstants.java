@@ -19,4 +19,8 @@ public class SecurityConstants {
             "/api/event",
             "/api/event/isOpen"
     };
+
+    public static final String[] ACTUATOR_URL = {
+            "/actuator/prometheus"
+    };
 }
