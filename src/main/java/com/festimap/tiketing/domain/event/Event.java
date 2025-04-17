@@ -130,7 +130,7 @@ public class Event {
     }
 
     public void updateIsFinished(EventIsFinishedUpdateDto eventIsFinishedUpdateDto){
-        if (eventIsFinishedUpdateDto.isFinished()) {
+        if (eventIsFinishedUpdateDto.getIsFinished()) {
             this.isFinished = true;
             return;
         }
