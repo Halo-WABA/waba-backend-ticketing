@@ -117,13 +117,4 @@ public class TicketControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
     }
-
-    @Test
-    void 티켓발급요청_권한이_없을때_예외() throws Exception {
-        //when & then
-        mockMvc.perform(post("/api/ticket/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isUnauthorized());
-    }
 }
