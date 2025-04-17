@@ -14,8 +14,8 @@ import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    @Query("SELECT e FROM Event e WHERE e.festivalId = : festivalId ")
-    List<Event> findAllByFestivalId(@Param("festivalId") Long FestivalId);
+    @Query("SELECT e FROM Event e WHERE e.festivalId = :festivalId ")
+    List<Event> findAllByFestivalId(@Param("festivalId") Long festivalId);
 
     //TODO : time out 시간 정하기
     @Lock(LockModeType.PESSIMISTIC_WRITE)
