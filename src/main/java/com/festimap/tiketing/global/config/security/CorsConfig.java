@@ -24,7 +24,9 @@ public class CorsConfig {
             "https://adelante.wabauniv.com",
             "http://m.localhost:3000",
             "https://firefestivaljeju.com",
-            "https://m.firefestivaljeju.com"
+            "https://m.firefestivaljeju.com",
+            "https://mokpowshow.co.kr",
+            "https://m.mokpowshow.co.kr"
     );
 
     @Bean
@@ -33,7 +35,7 @@ public class CorsConfig {
 
         configuration.setAllowedOrigins(ALLOWED_ORIGINS);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With","withcredentials"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
