@@ -36,7 +36,7 @@ public class SmsSendRequest {
                 "[축제 디지털 가이드 페스티맵]\n" +
                 "인증번호: %s\n" +
                 "입장권 관련 문의: https://pf.kakao.com/_Ixexiwn\n" +
-                "예매 완료시 2-3일내로 발송됩니다.",
+                "입장권은 4월 22일(화) 이후 발송됩니다.",
                 code
         );
     }
