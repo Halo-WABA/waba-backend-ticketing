@@ -14,6 +14,7 @@ public class AuthorizationConfig {
                 .antMatchers(HttpMethod.POST, SecurityConstants.PUBLIC_POST_URLS).permitAll()
                 .antMatchers(HttpMethod.GET, SecurityConstants.PUBLIC_GET_URLS).permitAll()
                 .antMatchers(HttpMethod.GET, SecurityConstants.ACTUATOR_URL).permitAll()
+                .antMatchers(HttpMethod.DELETE, SecurityConstants.PUBLIC_DELETE_URLS).permitAll()
                 .anyRequest().authenticated();
     }
 }

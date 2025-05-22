@@ -38,12 +38,18 @@ public enum ErrorCode {
     TICKET_SOLD_OUT("T003", "Not enough tickets remaining", 400),
     TICKET_SERVER_NOT_OPEN("T004", "Ticket Server Not Open", 400),
     TICKET_SERVICE_FINISHED("T005", "Ticket Service is Finished", 400),
+
     NOT_SUPPORTED_STRATEGY("T006","Not Supported Strategy",400),
     TICKET_SERVICE_CONGESTED("T007", "Ticketing Service Congested",500),
+    TICKET_CANCELLATION_WINDOW_EXPIRED("T007", "Ticket cancellation window expired", 400),
 
     // Event
     EVENT_ALREADY_OPEN("EVT001", "Cannot modify event after open time", 400),
     NO_REMAINING_TICKETS("EVT002", "Cannot reopen event: no remaining tickets", 400),
+
+    // Guest
+    INVALID_GUEST_TOKEN("G001", "Invalid guest token or Expired guest token", 401),
+    FORBIDDEN_GUEST_TOKEN("G003", "Token does not have GUEST role", 403),
     ;
 
     private final String code;

@@ -2,15 +2,22 @@ package com.festimap.tiketing.domain.ticket.controller;
 
 import com.festimap.tiketing.domain.ticket.TicketingStrategy;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
+import com.festimap.tiketing.domain.ticket.dto.TicketResDto;
 import com.festimap.tiketing.domain.ticket.service.QueueBasedTicketService;
+import com.festimap.tiketing.domain.ticket.service.TicketGuestService;
 import com.festimap.tiketing.domain.ticket.service.TicketService;
 import com.festimap.tiketing.domain.ticket.service.TicketServiceFactory;
+import com.festimap.tiketing.domain.ticket.util.GuestPhone;
 import com.festimap.tiketing.domain.ticket.util.TicketStrategyHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -18,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class TicketController {
 
     private final TicketServiceFactory ticketServiceFactory;
+    private final TicketGuestService ticketGuestService;
     private final TicketStrategyHolder strategyHolder;
 
     @PostMapping("/ticket/strategy")
@@ -37,5 +45,17 @@ public class TicketController {
         TicketingStrategy strategy = strategyHolder.getStrategy();
         TicketService service = ticketServiceFactory.getService(strategy);
         service.reserve(request);
+    }
+
+    @GetMapping("/guest/tickets")
+    public List<TicketResDto> getReservedTickets(@RequestParam("festivalId") Long festivalId,
+                                                 @GuestPhone String phoneNumber){
+        return ticketGuestService.getGuestTickets(festivalId, phoneNumber);
+    }
+
+    @DeleteMapping("/guest/tickets/{reservationNumber}")
+    public void deleteReservation(@PathVariable("reservationNumber") String reservationNumber,
+                                  @GuestPhone String phoneNumber) {
+        ticketGuestService.deleteReservation(reservationNumber);
     }
 }

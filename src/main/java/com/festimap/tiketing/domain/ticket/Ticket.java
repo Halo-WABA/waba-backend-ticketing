@@ -2,6 +2,8 @@ package com.festimap.tiketing.domain.ticket;
 
 import com.festimap.tiketing.domain.event.Event;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
+import com.festimap.tiketing.global.error.ErrorCode;
+import com.festimap.tiketing.global.error.exception.BaseException;
 import com.festimap.tiketing.global.util.ReservationNumGenerator;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,6 +39,9 @@ public class Ticket {
     @Column(name = "phone_number", length = 11, nullable = false)
     private String phoneNumber;
 
+    @Column(name = "is_canceled", nullable = false)
+    private boolean isCanceled = false;
+
     @Column(name = "issued_at", nullable = false)
     @CreatedDate
     private LocalDateTime issuedAt;
@@ -59,5 +64,14 @@ public class Ticket {
                 .phoneNo(ticketRequest.getPhoneNumber())
                 .event(event)
                 .build();
+    }
+
+    public void cancelTicket(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime deadline = event.getOpenAt().plusDays(3);
+        if(now.isAfter(deadline)){
+            throw new BaseException(ErrorCode.TICKET_CANCELLATION_WINDOW_EXPIRED);
+        }
+        this.isCanceled = true;
     }
 }
