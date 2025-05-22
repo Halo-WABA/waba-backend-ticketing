@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.festimap.tiketing.domain.ticket.TicketingStrategy;
 import com.festimap.tiketing.domain.ticket.dto.TicketRequest;
 import com.festimap.tiketing.domain.ticket.service.QueueBasedTicketService;
+import com.festimap.tiketing.domain.ticket.service.TicketGuestService;
 import com.festimap.tiketing.domain.ticket.service.TicketService;
 import com.festimap.tiketing.domain.ticket.service.TicketServiceFactory;
 import com.festimap.tiketing.domain.ticket.util.TicketStrategyHolder;
@@ -47,6 +48,9 @@ public class TicketControllerTest {
 
     @MockBean
     private TicketServiceFactory ticketServiceFactory;
+
+    @MockBean
+    private TicketGuestService ticketGuestService;
 
     @MockBean
     private TicketStrategyHolder strategyHolder;
