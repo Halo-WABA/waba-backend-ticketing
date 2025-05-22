@@ -58,14 +58,26 @@ public class JwtProvider {
                 .collect(Collectors.toList());
     }
 
-    public String createToken(String account, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(account);
+    public String createToken(String identifier, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(identifier);
         claims.put("roles", roles);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + 3600000))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createGuestToken(String phoneNumber) {
+        Claims claims = Jwts.claims().setSubject(phoneNumber);
+        claims.put("roles", List.of("GUEST"));
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + 600000))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -90,6 +102,10 @@ public class JwtProvider {
             return bearerToken.substring(7).trim();
         }
         return null;
+    }
+
+    public String resolveGuestToken(HttpServletRequest request){
+        return request.getHeader("X-Guest-Token");
     }
 
     public Authentication getAuthentication(String token) {

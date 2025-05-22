@@ -17,10 +17,15 @@ public class SecurityConstants {
 
     public static final String[] PUBLIC_GET_URLS = {
             "/api/event",
-            "/api/event/isOpen"
+            "/api/event/isOpen",
+            "/api/guest/tickets"
     };
 
     public static final String[] ACTUATOR_URL = {
             "/actuator/prometheus"
+    };
+
+    public static final String[] PUBLIC_DELETE_URLS = {
+            "/api/guest/tickets/*"
     };
 }

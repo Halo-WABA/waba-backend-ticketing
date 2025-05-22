@@ -1,8 +1,10 @@
 package com.festimap.tiketing.domain.verification.controller;
 
+import com.festimap.tiketing.domain.verification.dto.TokenResDto;
 import com.festimap.tiketing.domain.verification.dto.VerificationCheckReqDto;
 import com.festimap.tiketing.domain.verification.dto.VerificationReqDto;
 import com.festimap.tiketing.domain.verification.service.VerificationService;
+import com.festimap.tiketing.global.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class VerificationController {
 
     private final VerificationService verificationService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/send/code")
     public void sendVerificationCode(@RequestBody @Validated VerificationReqDto verificationReqDto) {
@@ -20,7 +23,8 @@ public class VerificationController {
     }
 
     @PostMapping("/check/code")
-    public void checkVerificationCode(@RequestBody @Validated VerificationCheckReqDto verificationCheckReqDto) {
+    public TokenResDto checkVerificationCode(@RequestBody @Validated VerificationCheckReqDto verificationCheckReqDto) {
         verificationService.checkVerificationCode(verificationCheckReqDto);
+        return new TokenResDto(jwtProvider.createGuestToken(verificationCheckReqDto.getPhoneNumber()));
     }
 }
