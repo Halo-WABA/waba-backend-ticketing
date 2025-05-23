@@ -23,6 +23,7 @@ public class TicketResDto {
         this.reservationNumber = reservationNumber;
         this.eventName = eventName;
         this.count = count;
+        this.isCanceled = isCanceled;
     }
 
     public static TicketResDto from(Ticket ticket) {

@@ -52,9 +52,5 @@ public class VerificationService {
     private void validateEventIsActive(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-
-        if (event.isFinished()) {
-            throw new BaseException(ErrorCode.TICKET_RESERVATION_CLOSED);
-        }
     }
 }

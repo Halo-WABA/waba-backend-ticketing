@@ -68,7 +68,7 @@ public class Ticket {
 
     public void cancelTicket(){
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime deadline = event.getOpenAt().plusDays(3);
+        LocalDateTime deadline = event.getOpenAt().plusDays(6);
         if(now.isAfter(deadline)){
             throw new BaseException(ErrorCode.TICKET_CANCELLATION_WINDOW_EXPIRED);
         }
