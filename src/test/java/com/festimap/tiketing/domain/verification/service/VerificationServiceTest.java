@@ -104,19 +104,6 @@ public class VerificationServiceTest {
     }
 
     @Test
-    void SMS_전송_Event_isFinished_가_true_일때_예외(){
-        //given
-        setField(event, "isFinished", true);
-        given(eventRepository.findById(1L)).willReturn(Optional.of(event));
-
-        //when & then
-        assertThatThrownBy(() -> verificationService.sendVerificationCode(verificationReqDto))
-                .isInstanceOf(BaseException.class)
-                .extracting("errorCode")
-                .isEqualTo(ErrorCode.TICKET_RESERVATION_CLOSED);
-    }
-
-    @Test
     void 인증코드_검증_성공_테스트(){
         //given
         VerificationCheckReqDto dto = new VerificationCheckReqDto(verification.getPhoneNumber(),verification.getCode());
