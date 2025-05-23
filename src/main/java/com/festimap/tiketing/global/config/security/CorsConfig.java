@@ -26,7 +26,9 @@ public class CorsConfig {
             "https://firefestivaljeju.com",
             "https://m.firefestivaljeju.com",
             "https://mokpowshow.co.kr",
-            "https://m.mokpowshow.co.kr"
+            "https://m.mokpowshow.co.kr",
+            "https://business.festimap.kr",
+            "https://festival.business.festimap.kr"
     );
 
     @Bean
